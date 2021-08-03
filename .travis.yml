@@ -2,9 +2,6 @@
 dist: bionic
 language: python
 
-python:
-
-    - "3.8"
 
 before_install:
     - PROTOBUF_VERSION=3.13.0
@@ -20,7 +17,7 @@ script:
 
 
 jobs:
-    include:
-        - python: 3.8
-          before_install: python3 -m pip install black
-          script: black --check python/ test/
+  include:
+
+    
+    - python: 3.8
