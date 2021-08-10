@@ -61,7 +61,7 @@ jobs:
           eval "$(pyenv init -)"
           eval "$(pyenv init --path)"
           eval "$(pyenv virtualenv-init -)"
-
+          pyenv --version
           for PY in ${{matrix.py-ver-mypy-protobuf}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
             if [ ! -e ~/.pyenv/versions/$PY ]; then
               pyenv install --skip-existing $PY
@@ -111,7 +111,7 @@ jobs:
               eval pyenv init -
               eval pyenv init --path
               eval pyenv virtualenv-init -
-              
+              pyenv --version && \
               pwd && \
               ls && \
               ./run_test.sh
