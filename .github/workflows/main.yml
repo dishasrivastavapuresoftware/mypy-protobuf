@@ -95,23 +95,25 @@ jobs:
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
-              bash -exc 'apt-get update && apt-get -y install python3 python3-pip python3-venv curl git && \
+              bash -exc 'apt-get update && apt-get -y install python3 python3-pip python3-venv curl git make build-essential libssl-dev zlib1g-dev&& \
               python3 -m pip install virtualenv && python3 -m venv py38-venv && \
               source py38-venv/bin/activate && \
               python3 --version && \
-    
+              
               export PY_VER_MYPY=3.8.11 && \
               export PY_VER_UNIT_TESTS_3=3.8.11 && \
-              export PY_VER_UNIT_TESTS_2=2.7.18 && \
               
               pip3 install protobuf && \
-              curl https://pyenv.run | bash
+              
+              git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
+              echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc && \
+              echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc && \
+              echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)"\nfi' >> ~/.bashrc && \
+              exec "$SHELL" && \
+              pyenv install --list && \
+              pyenv versions && \
+              
 
-              export PATH="$HOME/.pyenv/bin:$PATH"
-              eval pyenv init -
-              eval pyenv init --path
-              eval pyenv virtualenv-init -
-              pyenv --version && \
               pwd && \
               ls && \
               ./run_test.sh
