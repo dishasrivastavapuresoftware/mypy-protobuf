@@ -24,5 +24,13 @@ jobs:
               echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc && \
               echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)"\nfi' >> ~/.bashrc && \
               exec "$SHELL" && \
-              
-              deactivate'
+              pyenv install --list && \
+              pyenv install 3.8.11 && \
+              pyenv versions && \
+              pyenv global 3.8.11 && \
+              python && \
+              apt-get install python-pip && \
+              pip --version && \
+              ls && \
+              pwd && \
+              ./run_test.sh'
