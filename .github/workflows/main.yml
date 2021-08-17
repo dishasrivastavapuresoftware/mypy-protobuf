@@ -33,4 +33,6 @@ jobs:
               pip --version && \
               ls && \
               pwd && \
+              pip3 install black && \
+              black . && \
               ./run_test.sh'
