@@ -20,5 +20,20 @@ jobs:
               arm64v8/ubuntu:20.04 \
               bash -exc 'apt-get update && apt-get -y install python3 python3-pip curl git make build-essential libssl-dev zlib1g-dev wget && \
               git clone https://github.com/pyenv/pyenv.git && \
-              file pyenv/libexec/ && \
+              file pyenv/libexec/pyenv && \
+               export PATH="/home/username/.pyenv/bin:$PATH" && \
+              eval "$(pyenv init -)" && \
+              eval "$(pyenv virtualenv-init -)" && \
+              exec "$SHELL" && \
+              pyenv install --list && \
+              pyenv install 3.8.11 && \
+              pyenv versions && \
+              pyenv global 3.8.11 && \
+              python && \
+              apt-get install python-pip && \
+              pip --version && \
+              ls && \
+              pwd && \
+              pip3 install black && \
+              black . && \
               ./run_test.sh'
