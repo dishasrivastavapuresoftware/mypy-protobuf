@@ -19,20 +19,6 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
               bash -exc 'apt-get update && apt-get -y install python3 python3-pip curl git make build-essential libssl-dev zlib1g-dev wget && \
-              git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
-              exec "$SHELL" && \
-              export PATH="/home/username/.pyenv/bin:$PATH" && \
-              eval "$(pyenv init -)" && \
-              eval "$(pyenv virtualenv-init -)" && \
-              pyenv install --list && \
-              pyenv install 3.8.11 && \
-              pyenv versions && \
-              pyenv global 3.8.11 && \
-              python && \
-              apt-get install python-pip && \
-              pip --version && \
-              ls && \
-              pwd && \
-              pip3 install black && \
-              black . && \
+              git clone https://github.com/pyenv/pyenv.git && \
+              file pyenv/libexec/ && \
               ./run_test.sh'
