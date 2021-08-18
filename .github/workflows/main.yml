@@ -55,6 +55,8 @@ jobs:
                 curl https://pyenv.run | bash
               fi && \
               echo ==========================222222222222222222===================================
+              echo $HOME && \
+              ls $HOME && \
               export PATH="$HOME/.pyenv/bin:$PATH" && \
               echo ========================333333333=====================================
               eval "$(pyenv init -)" && \
