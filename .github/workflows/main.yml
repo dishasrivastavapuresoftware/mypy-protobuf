@@ -82,7 +82,7 @@ jobs:
               eval "$(pyenv virtualenv-init -)" && \
               echo ========================1111111111111111===================================== && \
               pyenv versions && \
-              ls usr/bin/python && \
-              ls usr/bin.python3 && \
+              ls /usr/bin/python && \
+              ls /usr/bin/python3 && \
               echo ========================12121212121212121221212===================================== && \
               ./run_test.sh'
