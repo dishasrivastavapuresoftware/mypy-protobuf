@@ -48,7 +48,7 @@ jobs:
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
-              bash -exc 'apt-get update && apt-get install curl wget git && \
+              bash -exc 'apt-get update && apt-get -y install curl wget git && \
               if [ ! -e ~/.pyenv/bin/pyenv ]; then
                 rm -rf ~/.pyenv
                 curl https://pyenv.run | bash
