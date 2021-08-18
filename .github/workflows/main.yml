@@ -49,14 +49,20 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
               bash -exc 'apt-get update && apt-get -y install curl wget git && \
+              echo ============================1111111111111111111=================================
               if [ ! -e ~/.pyenv/bin/pyenv ]; then
                 rm -rf ~/.pyenv
                 curl https://pyenv.run | bash
               fi && \
+              echo ==========================222222222222222222===================================
               export PATH="$HOME/.pyenv/bin:$PATH" && \
+              echo ========================333333333=====================================
               eval "$(pyenv init -)" && \
+              echo ========================44444444444444444=====================================
               eval "$(pyenv init --path)" && \
+              echo ===========================555555555555555555==================================
               eval "$(pyenv virtualenv-init -)" && \
+              echo ===========================66666666666666==================================
               for PY in ${{matrix.py-ver-mypy-protobuf}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
                 if [ ! -e ~/.pyenv/versions/$PY ]; then
                   pyenv install --skip-existing $PY
@@ -64,8 +70,13 @@ jobs:
                   python -m pip install virtualenv
                 fi
               done && \
+              echo =============================================================
               export PATH="$HOME/.pyenv/bin:$PATH" && \
+              echo =============================================================
               eval "$(pyenv init -)" && \
+              echo =============================================================
               eval "$(pyenv init --path)" && \
+              echo =============================================================
               eval "$(pyenv virtualenv-init -)" && \
+              echo =============================================================
               ./run_test.sh'
