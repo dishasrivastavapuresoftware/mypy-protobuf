@@ -22,4 +22,5 @@ script:
 jobs:
     include:
         - python: 3.8
-          script: ./run_test.sh
+          before_install: pip3 install black
+          script: black .
