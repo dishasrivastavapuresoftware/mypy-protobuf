@@ -14,37 +14,58 @@ jobs:
         - name: Set up QEMU
           id: qemu
           uses: docker/setup-qemu-action@v1
+        - name: Cache pyenv
+          uses: actions/cache@v2
+          with:
+            path: |
+              ~/.pyenv
+              !~/.pyenv/versions
+            key: pyenv-installation-2
+        - name: Cache pyenv mypy-protobuf ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{matrix.py-ver-mypy-protobuf}}
+            key: pyenv-${{matrix.py-ver-mypy-protobuf}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv unit tests 3 ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_3}}
+            key: pyenv-${{env.PY_VER_UNIT_TESTS_3}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv unit tests 2 ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_2}}
+            key: pyenv-${{env.PY_VER_UNIT_TESTS_2}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv mypy ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_MYPY}}
+            key: pyenv-${{env.PY_VER_MYPY}}-${{hashFiles('setup.py')}}
         - name: Install and Run tests
+          env:
+            PY_VER_MYPY_PROTOBUF: ${{matrix.py-ver-mypy-protobuf}}
+            VALIDATE: 1
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
-              bash -exc 'apt-get update && apt-get install build-essential curl git make wget zlib1g-dev --yes'
-              curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash && \
-              git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "${HOME}/.pyenv/plugins/pyenv-virtualenvwrapper"
-              if [! grep -Eq "^[#]{4}[[:space:]]pyenv[[:space:]]config$" "${HOME}/.bashrc"] ; then
-                  echo -e "\n\nsetup pyenv configuration:\nThe following content was inserted at the end of the ${HOME}/.bashrc file";
-                  echo -e '\n#### pyenv config;
-                  if [ -f "$HOME/.pyenv/bin/pyenv"  && ! type -P pyenv &>/dev/null] ; then
-                      export PYTHON_CONFIGURE_OPTS="--enable-shared"
-                      export CFLAGS="-O2"
-                      export PYTHON_BUILD_ARIA2_OPTS="-x 10 -k 1M"
-                      export PYENV_ROOT="${HOME}/.pyenv"
-                      export PATH="${PYENV_ROOT}/bin:${PATH}"
-                      eval "$(pyenv init --path)"
-                      eval "$(pyenv init -)"
-                      eval "$(pyenv virtualenv-init -)"
-                          if [[ ! "$(pyenv which python)" == "/usr/bin/python" ]] ; then
-                              pyenv virtualenvwrapper_lazy;
-                          fi
-                  fi
-                  #### pyenv config end' | tee --append "${HOME}/.bashrc";
-                  source "${HOME}/.bashrc";
-              else
-                  echo -e "\n\npyenv configuration already installed in ${HOME}/.bashrc";
+              bash -exc 'apt-get update && apt-get install curl wget git && \
+              if [ ! -e ~/.pyenv/bin/pyenv ]; then
+                rm -rf ~/.pyenv
+                curl https://pyenv.run | bash
               fi && \
-              source "${HOME}/.bashrc" && \
-              pyenv install --skip-existing 3.8.11 && \
-              pyenv global python3.8.11 && \
-              source "${HOME}/.bashrc" && \
-              python3.8.11 -m pip install pip setuptools wheel virtualenv virtualenvwrapper -U
-              
+              export PATH="$HOME/.pyenv/bin:$PATH" && \
+              eval "$(pyenv init -)" && \
+              eval "$(pyenv init --path)" && \
+              eval "$(pyenv virtualenv-init -)" && \
+              for PY in ${{matrix.py-ver-mypy-protobuf}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
+                if [ ! -e ~/.pyenv/versions/$PY ]; then
+                  pyenv install --skip-existing $PY
+                  pyenv shell $PY
+                  python -m pip install virtualenv
+                fi
+              done && \
+              export PATH="$HOME/.pyenv/bin:$PATH" && \
+              eval "$(pyenv init -)" && \
+              eval "$(pyenv init --path)" && \
+              eval "$(pyenv virtualenv-init -)" && \
+              ./run_test.sh'
