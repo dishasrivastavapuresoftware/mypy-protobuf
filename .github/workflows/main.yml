@@ -79,8 +79,7 @@ jobs:
               echo ========================1010101010101010101010=====================================
               eval "$(pyenv virtualenv-init -)" && \
               echo ========================1111111111111111=====================================
-              pyenv-which python && \
-              pyenv-which python3 && \
+
               pyenv versions && \
               ls usr/bin/python && \
               ls usr/bin.python3 && \
