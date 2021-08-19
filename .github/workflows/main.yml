@@ -5,12 +5,12 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
 
-    run_test_x68:
+    run_test_x86:
         name: ${{ matrix.py-ver-mypy-protobuf }}
         runs-on: ubuntu-latest
         env:
-          PY_VER_MYPY: 3.8.11
-          PY_VER_UNIT_TESTS_3: 3.8.11
+          PY_VER_MYPY: 3.8
+          PY_VER_UNIT_TESTS_3: 3.8
           PY_VER_UNIT_TESTS_2: 2.7.18
         strategy:
             matrix:
@@ -122,7 +122,10 @@ jobs:
             key: pyenv-${{env.PY_VER_MYPY}}-${{hashFiles('setup.py')}}
         - name: Install and Run tests
           env:
-            PY_VER_MYPY_PROTOBUF: ${{matrix.py-ver-mypy-protobuf}}
+            PY_VER_MYPY_PROTOBUF: 3.8
+            PY_VER_MYPY: 3.8
+            PY_VER_UNIT_TESTS_3: 3.8
+            PY_VER_UNIT_TESTS_2: 2.7.18
             VALIDATE: 1
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
