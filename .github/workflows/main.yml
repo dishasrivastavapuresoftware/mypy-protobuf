@@ -82,7 +82,7 @@ jobs:
             with:
               version: 1.1.157
           
-     armv64_job:
+    armv64_job:
       name: Build and Test for arm64
       runs-on: ubuntu-20.04
       steps:
@@ -160,4 +160,4 @@ jobs:
               ls /usr/bin/ && \
               echo ========================12121212121212121221212===================================== && \
               ./run_test.sh'
-        
+    
