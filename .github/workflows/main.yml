@@ -13,11 +13,9 @@ jobs:
           PY_VER_UNIT_TESTS_3: 3.8.11
           PY_VER_UNIT_TESTS_2: 2.7.18
         strategy:
-        matrix:
-            # Running mypy-protobuf itself
-            py-ver-mypy-protobuf: [
-                3.8.11,
-            ]
+            matrix:
+                # Running mypy-protobuf itself
+                py-ver-mypy-protobuf: [3.8.11]
         steps:
           - name: Install Protoc
             uses: arduino/setup-protoc@v1
@@ -84,4 +82,82 @@ jobs:
             with:
               version: 1.1.157
           
-          
+     armv64_job:
+      name: Build and Test for arm64
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up QEMU
+          id: qemu
+          uses: docker/setup-qemu-action@v1
+        - name: Cache pyenv
+          uses: actions/cache@v2
+          with:
+            path: |
+              ~/.pyenv
+              !~/.pyenv/versions
+            key: pyenv-installation-2
+        - name: Cache pyenv mypy-protobuf ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{matrix.py-ver-mypy-protobuf}}
+            key: pyenv-${{matrix.py-ver-mypy-protobuf}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv unit tests 3 ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_3}}
+            key: pyenv-${{env.PY_VER_UNIT_TESTS_3}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv unit tests 2 ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_2}}
+            key: pyenv-${{env.PY_VER_UNIT_TESTS_2}}-${{hashFiles('setup.py')}}
+        - name: Cache pyenv mypy ver
+          uses: actions/cache@v2
+          with:
+            path: ~/.pyenv/versions/${{env.PY_VER_MYPY}}
+            key: pyenv-${{env.PY_VER_MYPY}}-${{hashFiles('setup.py')}}
+        - name: Install and Run tests
+          env:
+            PY_VER_MYPY_PROTOBUF: ${{matrix.py-ver-mypy-protobuf}}
+            VALIDATE: 1
+          run: |
+            docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+              arm64v8/ubuntu:20.04 \
+              bash -exc 'apt-get update && apt-get -y install curl wget git && \
+              echo ============================1111111111111111111================================= && \
+              if [ ! -e ~/.pyenv/bin/pyenv ]; then
+                rm -rf ~/.pyenv
+                curl https://pyenv.run | bash
+              fi && \
+              echo ==========================222222222222222222=================================== && \
+              echo $HOME && \
+              ls -a $HOME/ && \
+              export PATH="$HOME/.pyenv/bin:$PATH" && \
+              echo ========================333333333===================================== && \
+              eval "$(pyenv init -)" && \
+              echo ========================44444444444444444===================================== && \
+              eval "$(pyenv init --path)" && \
+              echo ===========================555555555555555555================================== && \
+              eval "$(pyenv virtualenv-init -)" && \
+              echo ===========================66666666666666================================== && \
+              for PY in ${{matrix.py-ver-mypy-protobuf}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
+                if [ ! -e ~/.pyenv/versions/$PY ]; then
+                  pyenv install --skip-existing $PY
+                  pyenv shell $PY
+                  python -m pip install virtualenv
+                fi
+              done && \
+              echo =====================7777777777777======================================== && \
+              export PATH="$HOME/.pyenv/bin:$PATH" && \
+              echo =======================888888888888====================================== && \
+              eval "$(pyenv init -)" && \
+              echo ========================99999999999999===================================== && \
+              eval "$(pyenv init --path)" && \
+              echo ========================1010101010101010101010===================================== && \
+              eval "$(pyenv virtualenv-init -)" && \
+              echo ========================1111111111111111===================================== && \
+              ls /usr/bin/ && \
+              echo ========================12121212121212121221212===================================== && \
+              ./run_test.sh'
+        
