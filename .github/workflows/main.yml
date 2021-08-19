@@ -9,8 +9,8 @@ jobs:
         name: ${{ matrix.py-ver-mypy-protobuf }}
         runs-on: ubuntu-latest
         env:
-          PY_VER_MYPY: 3.8
-          PY_VER_UNIT_TESTS_3: 3.8
+          PY_VER_MYPY: 3.8.11
+          PY_VER_UNIT_TESTS_3: 3.8.11
           PY_VER_UNIT_TESTS_2: 2.7.18
         strategy:
             matrix:
@@ -64,6 +64,7 @@ jobs:
               for PY in ${{matrix.py-ver-mypy-protobuf}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
                 if [ ! -e ~/.pyenv/versions/$PY ]; then
                   pyenv install --skip-existing $PY
+                  echo $PY
                   pyenv shell $PY
                   python -m pip install virtualenv
                 fi
@@ -101,21 +102,31 @@ jobs:
               !~/.pyenv/versions
             key: pyenv-installation-2
         - name: Cache pyenv mypy-protobuf ver
+          env:
+            PY_VER_MYPY_PROTOBUF: 3.8
+            PY_VER_MYPY: 3.8
+            PY_VER_UNIT_TESTS_3: 3.8
+            VALIDATE: 1
           uses: actions/cache@v2
           with:
-            path: ~/.pyenv/versions/${{matrix.py-ver-mypy-protobuf}}
-            key: pyenv-${{matrix.py-ver-mypy-protobuf}}-${{hashFiles('setup.py')}}
+            path: ~/.pyenv/versions/${{env.PY_VER_MYPY_PROTOBUF}}
+            key: pyenv-${{env.PY_VER_MYPY_PROTOBUF}}-${{hashFiles('setup.py')}}
         - name: Cache pyenv unit tests 3 ver
+          env:
+            PY_VER_MYPY_PROTOBUF: 3.8
+            PY_VER_MYPY: 3.8
+            PY_VER_UNIT_TESTS_3: 3.8
+            VALIDATE: 1
           uses: actions/cache@v2
           with:
             path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_3}}
             key: pyenv-${{env.PY_VER_UNIT_TESTS_3}}-${{hashFiles('setup.py')}}
-        - name: Cache pyenv unit tests 2 ver
-          uses: actions/cache@v2
-          with:
-            path: ~/.pyenv/versions/${{env.PY_VER_UNIT_TESTS_2}}
-            key: pyenv-${{env.PY_VER_UNIT_TESTS_2}}-${{hashFiles('setup.py')}}
         - name: Cache pyenv mypy ver
+          env:
+            PY_VER_MYPY_PROTOBUF: 3.8
+            PY_VER_MYPY: 3.8
+            PY_VER_UNIT_TESTS_3: 3.8
+            VALIDATE: 1
           uses: actions/cache@v2
           with:
             path: ~/.pyenv/versions/${{env.PY_VER_MYPY}}
@@ -125,7 +136,6 @@ jobs:
             PY_VER_MYPY_PROTOBUF: 3.8
             PY_VER_MYPY: 3.8
             PY_VER_UNIT_TESTS_3: 3.8
-            PY_VER_UNIT_TESTS_2: 2.7.18
             VALIDATE: 1
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
@@ -152,6 +162,7 @@ jobs:
               for PY in ${{env.PY_VER_MYPY_PROTOBUF}} ${{env.PY_VER_MYPY}} ${{env.PY_VER_UNIT_TESTS_3}} ${{env.PY_VER_UNIT_TESTS_2}}; do
                 if [ ! -e ~/.pyenv/versions/$PY ]; then
                   pyenv install --skip-existing $PY
+                  echo $PY
                   pyenv shell $PY
                   python -m pip install virtualenv
                 fi
