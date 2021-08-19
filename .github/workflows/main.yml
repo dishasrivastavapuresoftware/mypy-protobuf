@@ -72,6 +72,9 @@ jobs:
             env:
               PY_VER_MYPY_PROTOBUF: ${{matrix.py-ver-mypy-protobuf}}
             run: |
+              echo $HOME
+              ls -a $HOME/
+              ls /usr/bin/
               export PATH="$HOME/.pyenv/bin:$PATH"
               eval "$(pyenv init -)"
               eval "$(pyenv init --path)"
