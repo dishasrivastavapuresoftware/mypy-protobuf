@@ -108,5 +108,4 @@ jobs:
               ls /usr/bin && \
               pwd && \
               python3 --version && \
-              vim $HOME/.bashrc && \
-              ## pyenv configs >> $HOME/.bashrc'
+              vim $HOME/.bashrc'
