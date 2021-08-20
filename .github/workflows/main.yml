@@ -102,9 +102,9 @@ jobs:
               ls && \
               echo =========================== contents of HOME ========================== && \
               ls -a $HOME/ && \
+              file $HOME/.bashrc && \
               file $HOME/.pyenv && \
               echo =========================== contents of usr/bin ========================== && \
               ls /usr/bin && \
               pwd && \
-              python3 --version && \
-              vim $HOME/.bashrc'
+              python3 --version'
