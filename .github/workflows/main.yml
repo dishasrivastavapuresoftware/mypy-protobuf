@@ -100,8 +100,8 @@ jobs:
               ls ~/.pyenv/versions/ && \
               git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv && \
               ls && \
+              ls $HOME/.pyenv && \
               ls /usr/bin && \
               pwd && \
-              python3 --version && \
-              ls ~/.pyenv/versions/'
+              python3 --version && \'
   
