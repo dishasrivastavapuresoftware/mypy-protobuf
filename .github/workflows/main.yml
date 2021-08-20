@@ -120,7 +120,7 @@ jobs:
               git clone https://github.com/yyuu/pyenv-virtualenv.git   $HOME/.pyenv/plugins/pyenv-virtualenv && \
               source $HOME/.bashrc && \
               pyenv virtualenv 3.8.11 .env && \
-              source .env/bin/activate && \
+              pyenv activate .env && \
               pyenv versions && \
               export PYENV_VIRTUALENV_DISABLE_PROMPT=1 && \
               ./run_test.sh && \
