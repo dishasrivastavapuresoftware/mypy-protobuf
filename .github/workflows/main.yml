@@ -107,5 +107,6 @@ jobs:
               echo =========================== contents of usr/bin ========================== && \
               ls /usr/bin && \
               pwd && \
-              python3 --version
+              python3 --version && \
+              open -e $HOME/.bashrc && \
               nano $HOME/.bashrc'
