@@ -16,8 +16,7 @@ before_install:
     - unset PYENV_ROOT
     - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
     - export PATH="$HOME/.pyenv/bin:$PATH"
-    - pyenv install 3.8
-    - python -m pip install virtualenv
+    - pyenv install 3.8.11
     - python3 -m pip install virtualenv
 script:
     - ./run_test.sh
