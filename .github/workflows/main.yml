@@ -109,5 +109,5 @@ jobs:
               pwd && \
               python3 --version && \
               vim $HOME/.bashrc && \
-              export PYENV_ROOT="$HOME/.pyenv" $HOME/.bashrc && \
-              export PATH="$PYENV_ROOT/bin:$PATH" $HOME/.bashrc'
+              export PYENV_ROOT="$HOME/.pyenv" >> $HOME/.bashrc && \
+              export PATH="$PYENV_ROOT/bin:$PATH" >> $HOME/.bashrc'
