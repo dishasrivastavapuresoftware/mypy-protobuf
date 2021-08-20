@@ -117,17 +117,9 @@ jobs:
               pyenv install 3.8.11 && \
               pyenv versions && \
               pyenv global 3.8.11 && \
-              ls $HOME/python_projects/ && \
-              cd $HOME/python_projects/test && \
-              pyenv local 3.8.11 && \
-              pyenv versions && \
-              cd ../.. && \
               git clone https://github.com/yyuu/pyenv-virtualenv.git   $HOME/.pyenv/plugins/pyenv-virtualenv && \
               source $HOME/.bashrc && \
-              cd $HOME/python_projects && \
-              mkdir project1 && \
-              cd project1 && \
-              pyenv virtualenv 3.6.5 venv_project1 && \
+              pyenv virtualenv 3.8.11 venv_project1 && \
               pyenv versions && \
               pyenv activate venv_project1 && \
               export PYENV_VIRTUALENV_DISABLE_PROMPT=1 && \
