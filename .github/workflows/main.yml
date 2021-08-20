@@ -119,9 +119,12 @@ jobs:
               pyenv global 3.8.11 && \
               git clone https://github.com/yyuu/pyenv-virtualenv.git   $HOME/.pyenv/plugins/pyenv-virtualenv && \
               source $HOME/.bashrc && \
-              ${{ env.py }} -m pyenv .env && \
+              pyenv virtualenv 3.8.11 .env && \
               source .env/bin/activate && \
               pyenv versions && \
               export PYENV_VIRTUALENV_DISABLE_PROMPT=1 && \
               ./run_test.sh && \
               deactivate'
+              
+#${{ env.py }} -m pyenv .env && \
+#source .env/bin/activate && \
