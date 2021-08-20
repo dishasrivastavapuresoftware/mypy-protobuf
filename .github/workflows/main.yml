@@ -97,12 +97,11 @@ jobs:
               ls /usr/bin && \
               pwd && \
               python3 --version && \
-              python --version && \
               ls ~/.pyenv/versions/ && \
               git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv && \
               ls && \
               ls /usr/bin && \
-              pwd && \python3 --version && \
-              python --version && \
+              pwd && \
+              python3 --version && \
               ls ~/.pyenv/versions/'
   
