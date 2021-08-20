@@ -108,4 +108,9 @@ jobs:
               ls /usr/bin && \
               pwd && \
               python3 --version && \
-              rm -rf $HOME/.bashrc && vim $HOME/.bashrc'
+              vim $HOME/.bashrc && \
+              ## pyenv configs >> $HOME/.bashrc && \
+              export PYENV_ROOT="$HOME/.pyenv" >> $HOME/.bashrc && \
+              export PATH="$PYENV_ROOT/bin:$PATH" >> $HOME/.bashrc && \
+              if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)" fi >> $HOME/.bashrc && \
+              cat << EOF > $HOME/.bashrc'
