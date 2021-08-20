@@ -94,14 +94,14 @@ jobs:
               bash -exc 'apt-get update && apt install -y python3 make build-essential libssl-dev zlib1g-dev wget curl git git-core gcc llvm libncurses5-dev libffi-dev liblzma-dev libbz2-dev libreadline-dev libsqlite3-dev libncursesw5-dev python-openssl xz-utils && \
               ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && export DEBIAN_FRONTEND=noninteractive && apt-get install -y tzdata && dpkg-reconfigure --frontend noninteractive tzdata && \
               ls && \
-              ls usr/bin && \
+              ls /usr/bin && \
               pwd && \
               python3 --version && \
               python --version && \
               ls ~/.pyenv/versions/ && \
               git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv && \
               ls && \
-              ls usr/bin && \
+              ls /usr/bin && \
               pwd && \python3 --version && \
               python --version && \
               ls ~/.pyenv/versions/'
