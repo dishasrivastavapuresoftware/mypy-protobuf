@@ -13,6 +13,10 @@ before_install:
     - unzip $PROTOC_FILENAME -d $HOME/.local
     # We have to install protoc, and python libs for both python and python3, since mypy runs py3
     - sudo apt-get install -qq python3-pip python3-setuptools
+    - unset PYENV_ROOT
+    - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    - export PATH="$HOME/.pyenv/bin:$PATH"
+    - pyenv install 3.8
     - python -m pip install virtualenv
     - python3 -m pip install virtualenv
 script:
