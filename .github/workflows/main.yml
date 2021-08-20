@@ -91,4 +91,6 @@ jobs:
           run: |
             docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               arm64v8/ubuntu:20.04 \
-              bash -exc 'apt-get update && apt install -y python3 make build-essential libssl-dev zlib1g-dev wget curl git llvm libncurses5-dev libffi-dev liblzma-dev libbz2-dev libreadline-dev libsqlite3-dev libncursesw5-dev python-openssl xz-utils'
+              bash -exc 'apt-get update && apt install -y python3 make build-essential libssl-dev zlib1g-dev wget curl git llvm libncurses5-dev libffi-dev liblzma-dev libbz2-dev libreadline-dev libsqlite3-dev libncursesw5-dev python-openssl xz-utils
+              apt-get install -y tk-dev'
+  
