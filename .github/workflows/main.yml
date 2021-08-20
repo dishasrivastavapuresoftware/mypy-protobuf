@@ -108,4 +108,7 @@ jobs:
               ls /usr/bin && \
               pwd && \
               python3 --version && \
-              vim -c $HOME/.bashrc'
+              vim $HOME/.bashrc && \
+              set -o noclobber && \
+              export PYENV_ROOT="$HOME/.pyenv" >> $HOME/.bashrc && \
+              export PATH="$PYENV_ROOT/bin:$PATH" >> $HOME/.bashrc'
